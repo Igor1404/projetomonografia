@@ -1,0 +1,61 @@
+%%Nome: Igor Rodrigues Cardoso
+%Matricula: 0323478
+close all;
+clear all;
+clc;
+
+%%
+%Utilizando Filtro Média Móvel
+%1º Utilizando o um capacitor juntamente com um resistor em paralelo
+load('MsentadosemC');
+load('MsentadocomC');
+load('MSlateralsemC');
+load('MSlateralcomC');
+load('MpesemC');
+load('MpecomC');
+load('MplateralsemC');
+load('MplateralcomC');
+
+
+%Valo MAB: A = Tipo de movimento, B = Numeração do movimento.
+Out = M02;%Coloque aqui qual é o valor a ser ajustado;
+Out2 = M02;%Validação
+
+N = length(Out);
+n = 1:1:N;
+MM = 15;
+
+bb = ones(MM,1)/MM;
+
+R = filter(bb,1,Out);
+RR = R;
+figure;
+plot(RR,'black','linewidth',3);
+hold on;
+plot(Out2,'blue');
+grid on;
+%%
+%III - Detector de Envoltória.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+wc = 1.5; %Frequência de corte;
+wa = 100; %Frequencia de amostragem;
+wn = 2*wc/wa
+[a,b] = butter(1,wn,'low');
+C = fir1(2,wn,'low');
+fs = abs(2*Out.*Out);
+fw = abs(2*RR.*RR);
+ysq = filter(a,b,fs);
+ywq = filter(1,0.1,fw);
+YSS = sqrt(ysq);
+YWW = sqrt(ywq);
+figure;
+plot(Out2,'blue');
+hold on;
+plot(YSS,'black','linewidth',3);
+grid on;
+% figure;
+% plot(Out2,'magenta');
+% hold on;
+% plot(YWW,'black','linewidth',2);
+% grid on;
+%%

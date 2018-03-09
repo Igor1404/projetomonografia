@@ -1,0 +1,31 @@
+%Organização dos movimentos de validação
+
+
+%Carregamento dos valores
+load('MsentadosemC');
+load('MsentadocomC');
+load('MSlateralsemC');
+load('MSlateralcomC');
+load('MpesemC');
+load('MpecomC');
+load('MplateralsemC');
+load('MplateralcomC');
+
+
+%Movimento de validação
+%V01
+V1 = 
+%V02
+%V03
+%V04
+%V05
+%V06
+%V07
+%V08
+%V09
+%V10
+
+
+save('')
+
+

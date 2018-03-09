@@ -1,0 +1,83 @@
+%%Nome: Igor Rodrigues Cardoso
+%Matricula: 0323478
+close all;
+clear all;
+clc;
+
+
+
+%%
+%1º Aquisição dos movimentos
+load('MsentadosemC');
+load('MsentadocomC');
+load('MSlateralsemC');
+load('MSlateralcomC');
+load('MpesemC');
+load('MpecomC');
+load('MplateralsemC');
+load('MplateralcomC');
+load('EMGvalidacao');
+load('EMGvalidacao2');
+
+%Lengenda do valor  MAB: A = Tipo de movimento, B = Numeração do movimento.
+%Movimento de ajuste do filtro média móvel:
+In1 = M21;
+%Movimento de ajuste do filtro de detector de envoltória
+In2 = M21;
+PR1 = 50*ones(length(In1),1);
+PR2 = 50*ones(length(In2),1);
+%%
+%2º) Implementação do Filtro média móvel:
+N = length(In1);
+n = 1:1:N;
+MM = 50;
+
+bb = ones(MM,1)/MM;
+
+FMM = filter(bb,1,In1);
+figure;
+plot(PR1,'--red');
+hold on;
+plot(FMM,'black','linewidth',3);
+hold on;
+plot(In1,'blue');
+grid on;
+%%
+%3º)Implementação do Detector de Envoltória:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+wc = 1.5; %Frequência de corte;
+wa = 100; %Frequencia de amostragem;
+wn = 2*wc/wa
+[a,b] = butter(1,wn,'low');
+fs = abs(2*In2.*In2);
+ysq = filter(a,b,fs);
+DEnv = sqrt(ysq);
+figure;
+plot(PR2,'--red');
+hold on;
+plot(In2,'blue');
+hold on;
+plot(DEnv,'black','linewidth',3);
+grid on;
+
+%%
+
+%Salvando os valores ajustados para comparação com os movimentos de
+%validação
+save('EMGajuste.mat','FMM','DEnv');
+%%
+%Utilizando FIR para detecção do envoltório
+%fw = abs(2*RR.*RR);
+%ywq = filter(1,0.1,fw);
+%C = fir1(2,wn,'low');
+%YWW = sqrt(ywq);
+
+% figure;
+% plot(Out2,'magenta');
+% hold on;
+% plot(YWW,'black','linewidth',2);
+% grid on;
+%%
+
+
+
